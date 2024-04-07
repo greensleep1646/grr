@@ -1,6 +1,3 @@
-#Xractz
-#IndoSec
-
 import json, re
 from requests import Session
 s = Session()
@@ -11,7 +8,7 @@ id = input("\nEnter your username/email/phone number: ")
 url = "https://www.instagram.com/accounts/account_recovery_send_ajax/"
 
 g = s.get("https://www.instagram.com/accounts/password/reset/").text
-token = re.search(r'csrf_token":"',g).group(1)
+token = re.search(r'csrf_token":(,g).group(1)
 
 headers = {
     'x-csrftoken': token
@@ -22,3 +19,7 @@ data = {
 	,'recaptcha_challenge_field':''
 }
 
+r = s.post(url, data=data, headers=headers)
+a = json.loads(r.text)
+print(f"Status  : {a['status']}")
+print(f"Message : {a['message']}")
