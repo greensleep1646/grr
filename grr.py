@@ -11,7 +11,7 @@ def get_email_from_instagram(username):
         return None
 
 # Replace 'username' with the Instagram username of the person you want to get the email from
-username = 'heroin__needles'
+username = 'username'
 email = get_email_from_instagram(username)
 if email:
     print(f"The email address of {username} is: {email}")
