@@ -1,25 +1,19 @@
-import json, re
-from requests import Session
-s = Session()
+import requests
 
-print("RESET PASSWORD IG by Xractz")
-id = input("\nEnter your username/email/phone number: ")
+def get_email_from_instagram(username):
+    url = f"https://www.instagram.com/{username}/?__a=1"
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        email = data['graphql']['user']['business_email']
+        return email
+    else:
+        return None
 
-url = "https://www.instagram.com/accounts/account_recovery_send_ajax/"
-
-g = s.get("https://www.instagram.com/accounts/password/reset/").text
-token =
-
-headers = {
-    'x-csrftoken': token
-}
-
-data = {
-	'email_or_username':id
-	,'recaptcha_challenge_field':''
-}
-
-r = s.post(url, data=data, headers=headers)
-a = json.loads(r.text)
-print(f"Status  : {a['status']}")
-print(f"Message : {a['message']}")
+# Replace 'username' with the Instagram username of the person you want to get the email from
+username = 'heroin__needles'
+email = get_email_from_instagram(username)
+if email:
+    print(f"The email address of {username} is: {email}")
+else:
+    print(f"Could not retrieve the email address for {username}")
