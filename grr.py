@@ -1,19 +1,17 @@
 import requests
 
-def get_email_from_instagram(username):
+def e_posta_bul(username):
     url = f"https://www.instagram.com/{username}/?__a=1"
     response = requests.get(url)
     if response.status_code == 200:
-        data = response.json()
-        email = data['graphql']['user']['business_email']
-        return email
+        user_data = response.json()
+        if 'email' in user_data['graphql']['user']:
+            email = user_data['graphql']['user']['email']
+            print(f"{username} kullanıcısının e-posta adresi: {email}")
+        else:
+            print(f"{username} kullanıcısının herkese açık bir e-posta adresi yok.")
     else:
-        return None
+        print("Kullanıcı bulunamadı veya bir hata oluştu.")
 
-# Replace 'username' with the Instagram username of the person you want to get the email from
-username = 'username'
-email = get_email_from_instagram(username)
-if email:
-    print(f"The email address of {username} is: {email}")
-else:
-    print(f"Could not retrieve the email address for {username}")
+username = input("E-postasını bulmak istediğiniz Instagram kullanıcı adını girin: ")
+e_posta_bul(username)
