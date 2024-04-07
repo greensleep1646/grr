@@ -1,17 +1,23 @@
+
 import requests
+from bs4 import BeautifulSoup
 
-def e_posta_bul(username):
-    url = f"https://www.instagram.com/{username}/?__a=1"
+def email_bul(username):
+    url = 'https://www.instagram.com/' + username
     response = requests.get(url)
-    if response.status_code == 200:
-        user_data = response.json()
-        if 'email' in user_data['graphql']['user']:
-            email = user_data['graphql']['user']['email']
-            print(f"{username} kullanıcısının e-posta adresi: {email}")
-        else:
-            print(f"{username} kullanıcısının herkese açık bir e-posta adresi yok.")
-    else:
-        print("Kullanıcı bulunamadı veya bir hata oluştu.")
+    soup = BeautifulSoup(response.text, 'html.parser')
+    meta_tags = soup.find_all('meta')
+    
+    for tag in meta_tags:
+        if 'property' in tag.attrs and tag.attrs['property'] == 'og:description':
+            content = tag.attrs['content']
+            email_index = content.find('E-mail:')
+            if email_index != -1:
+                email = content[email_index+7:].split(' ')[0]
+                print("Kişinin e-posta adresi:", email)
+                return email
+    
+    print("E-posta adresi bulunamadı.")
 
-username = input("E-postasını bulmak istediğiniz Instagram kullanıcı adını girin: ")
-e_posta_bul(username)
+username = input("Instagram kullanıcı adını girin: ")
+email_bul(username)
