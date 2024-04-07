@@ -8,7 +8,7 @@ id = input("\nEnter your username/email/phone number: ")
 url = "https://www.instagram.com/accounts/account_recovery_send_ajax/"
 
 g = s.get("https://www.instagram.com/accounts/password/reset/").text
-token = re.search(r'csrf_token":(,g).group(1)
+token = re.search(r'csrf_token":"(.?)"',g).group(1)
 
 headers = {
     'x-csrftoken': token
